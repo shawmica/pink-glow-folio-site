@@ -1,9 +1,14 @@
 
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -44,14 +49,92 @@ const Header = () => {
               {item.name}
             </a>
           ))}
+          
+          {user ? (
+            <div className="flex items-center gap-3">
+              <Link 
+                to="/dashboard"
+                className="text-sm text-white/80 hover:text-pink transition-colors"
+              >
+                Dashboard
+              </Link>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => signOut()}
+                className="border-pink text-pink hover:bg-pink/10 text-sm py-1 h-auto"
+              >
+                Sign Out
+              </Button>
+            </div>
+          ) : (
+            <Link 
+              to="/auth"
+              className="text-sm text-white/80 hover:text-pink transition-colors"
+            >
+              Sign In
+            </Link>
+          )}
         </nav>
         
-        <button className="md:hidden text-white">
+        <button 
+          className="md:hidden text-white"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       </div>
+      
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 right-0 bg-black/90 backdrop-blur-lg border-t border-gray-800 p-4">
+          <nav className="flex flex-col space-y-3">
+            {navItems.map((item) => (
+              <a 
+                key={item.name} 
+                href={item.href}
+                className="text-sm text-white/80 hover:text-pink transition-colors py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {item.name}
+              </a>
+            ))}
+            
+            {user ? (
+              <>
+                <Link 
+                  to="/dashboard"
+                  className="text-sm text-white/80 hover:text-pink transition-colors py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => {
+                    signOut();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="border-pink text-pink hover:bg-pink/10 text-sm py-1 h-auto"
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Link 
+                to="/auth"
+                className="text-sm text-white/80 hover:text-pink transition-colors py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Sign In
+              </Link>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
   );
 };

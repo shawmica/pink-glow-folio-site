@@ -5,14 +5,19 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useInView } from 'react-intersection-observer';
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ContactSection = () => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { ref, inView } = useInView({
     threshold: 0.1,
@@ -32,18 +37,35 @@ const ContactSection = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, you would send this data to your backend
-    console.log("Form submitted:", formData);
-    toast.success("Message sent! I'll get back to you soon.");
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
+    setIsSubmitting(true);
+    
+    try {
+      const { error } = await supabase.from('messages').insert({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        user_id: user?.id || null,
+      });
+      
+      if (error) throw error;
+      
+      toast.success("Message sent! I'll get back to you soon.");
+      
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error: any) {
+      console.error('Error submitting message:', error);
+      toast.error("Error sending message. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -68,6 +90,7 @@ const ContactSection = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
+                  disabled={isSubmitting}
                   className="bg-gray-900/60 border-gray-800 focus:border-pink text-white transition-all duration-300 focus:shadow-[0_0_10px_rgba(217,70,239,0.3)]"
                 />
               </div>
@@ -79,6 +102,7 @@ const ContactSection = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  disabled={isSubmitting}
                   className="bg-gray-900/60 border-gray-800 focus:border-pink text-white transition-all duration-300 focus:shadow-[0_0_10px_rgba(217,70,239,0.3)]"
                 />
               </div>
@@ -89,6 +113,7 @@ const ContactSection = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required
+                  disabled={isSubmitting}
                   className="bg-gray-900/60 border-gray-800 focus:border-pink text-white transition-all duration-300 focus:shadow-[0_0_10px_rgba(217,70,239,0.3)]"
                 />
               </div>
@@ -99,14 +124,16 @@ const ContactSection = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
+                  disabled={isSubmitting}
                   className="min-h-[150px] bg-gray-900/60 border-gray-800 focus:border-pink text-white transition-all duration-300 focus:shadow-[0_0_10px_rgba(217,70,239,0.3)]"
                 />
               </div>
               <Button 
                 type="submit" 
+                disabled={isSubmitting}
                 className="bg-gradient-to-r from-pink-dark via-pink to-pink-light hover:opacity-90 text-white w-full py-6 hover:shadow-[0_0_20px_rgba(217,70,239,0.4)] transition-all duration-300"
               >
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </Button>
             </form>
           </div>
