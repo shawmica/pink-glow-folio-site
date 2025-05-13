@@ -1,9 +1,23 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Activity } from "lucide-react";
+import { useInView } from 'react-intersection-observer';
 
 const ActivitiesSection = () => {
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: true
+  });
+
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    if (inView) {
+      setIsVisible(true);
+    }
+  }, [inView]);
+
   const activities = [
     {
       id: 1,
@@ -48,22 +62,25 @@ const ActivitiesSection = () => {
   ];
 
   return (
-    <section id="activities" className="py-20 bg-[#050505]">
+    <section ref={ref} id="activities" className="py-20 bg-gradient-to-b from-black to-[#050505]">
       <div className="container mx-auto px-6 md:px-10">
         <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center">
           Extracurricular <span className="text-gradient">Activities</span>
         </h2>
-        <div className="w-20 h-1 bg-pink mx-auto mb-12"></div>
+        <div className="w-20 h-1 bg-pink mx-auto mb-12 shimmer"></div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {activities.map((activity) => (
+          {activities.map((activity, index) => (
             <Card 
               key={activity.id} 
-              className="bg-gray-900/40 border border-gray-800 overflow-hidden hover:border-pink transition-all duration-300 hover:-translate-y-1"
+              className={`bg-gray-900/40 border border-gray-800 overflow-hidden hover:border-pink transition-all duration-500 hover:shadow-[0_0_20px_rgba(217,70,239,0.2)] hover:-translate-y-1 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+              }`}
+              style={{ transitionDelay: `${(index % 2) * 0.1 + 0.2}s` }}
             >
               <CardContent className="p-6">
                 <div className="flex gap-4 mb-4">
-                  <div className="h-12 w-12 rounded-full bg-pink flex items-center justify-center">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-r from-pink-dark to-pink flex items-center justify-center animate-pulse-glow">
                     <Activity className="h-6 w-6 text-white" />
                   </div>
                   <div>
@@ -79,7 +96,7 @@ const ActivitiesSection = () => {
                   <h4 className="text-white font-semibold mb-2">Key Achievements</h4>
                   <ul className="list-disc list-inside text-gray-300 space-y-1">
                     {activity.achievements.map((achievement, index) => (
-                      <li key={index} className="text-sm">
+                      <li key={index} className="text-sm hover:text-pink transition-colors duration-300">
                         {achievement}
                       </li>
                     ))}

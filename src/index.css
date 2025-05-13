@@ -71,6 +71,66 @@
   .hover-scale {
     @apply transition-transform duration-300 hover:scale-105;
   }
+  
+  /* Added new animation utilities */
+  .float-animation {
+    animation: floating 3s ease-in-out infinite;
+  }
+  
+  .shimmer {
+    background: linear-gradient(90deg, rgba(217,70,239,0) 0%, rgba(217,70,239,0.5) 50%, rgba(217,70,239,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  .rotate-animation {
+    animation: rotating 8s linear infinite;
+  }
+  
+  .bounce-subtle {
+    animation: bounce-subtle 2s ease infinite;
+  }
+  
+  .gradient-shift {
+    background-size: 400% 400%;
+    animation: gradient-shift 8s ease infinite;
+  }
+  
+  .typing-cursor::after {
+    content: "|";
+    animation: cursor-blink 1.2s infinite;
+  }
+  
+  @keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  
+  @keyframes rotating {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes bounce-subtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
 }
 
 #root {
