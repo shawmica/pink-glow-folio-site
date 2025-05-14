@@ -70,7 +70,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
             image_url: values.image_url || null,
             project_url: values.project_url || null,
             github_url: values.github_url || null,
-            tags: values.tags as string[],  // Explicitly cast to string[] to match database schema
+            tags: values.tags,  // The transform in the schema ensures this is already a string[]
             updated_at: new Date().toISOString(),
           })
           .eq('id', existingProject.id);
@@ -87,7 +87,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
             image_url: values.image_url || null,
             project_url: values.project_url || null,
             github_url: values.github_url || null,
-            tags: values.tags as string[],  // Explicitly cast to string[] to match database schema
+            tags: values.tags,  // The transform in the schema ensures this is already a string[]
             user_id: user.id,
           });
           
