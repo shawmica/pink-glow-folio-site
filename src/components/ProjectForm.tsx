@@ -65,7 +65,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
         const { error } = await supabase
           .from('projects')
           .update({
-            ...values,
+            title: values.title,
+            description: values.description,
+            image_url: values.image_url || null,
+            project_url: values.project_url || null,
+            github_url: values.github_url || null,
+            tags: values.tags as string[],  // Explicitly cast to string[] to match database schema
             updated_at: new Date().toISOString(),
           })
           .eq('id', existingProject.id);
@@ -77,7 +82,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
         const { error } = await supabase
           .from('projects')
           .insert({
-            ...values,
+            title: values.title,
+            description: values.description,
+            image_url: values.image_url || null,
+            project_url: values.project_url || null,
+            github_url: values.github_url || null,
+            tags: values.tags as string[],  // Explicitly cast to string[] to match database schema
             user_id: user.id,
           });
           
