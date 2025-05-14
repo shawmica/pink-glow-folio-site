@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,20 +59,25 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
     setIsSubmitting(true);
     
     try {
-      // Ensure tags is properly transformed from the zod schema to string[]
-      const processedTags = Array.isArray(values.tags) ? values.tags : [];
+      // Ensure tags is properly transformed to string[] from the zod transformation
+      const processedValues = {
+        ...values,
+        image_url: values.image_url || null,
+        project_url: values.project_url || null,
+        github_url: values.github_url || null,
+      };
       
       if (existingProject) {
         // Update existing project
         const { error } = await supabase
           .from('projects')
           .update({
-            title: values.title,
-            description: values.description,
-            image_url: values.image_url || null,
-            project_url: values.project_url || null,
-            github_url: values.github_url || null,
-            tags: processedTags,
+            title: processedValues.title,
+            description: processedValues.description,
+            image_url: processedValues.image_url,
+            project_url: processedValues.project_url,
+            github_url: processedValues.github_url,
+            tags: processedValues.tags, // This is now guaranteed to be string[] from zod transform
             updated_at: new Date().toISOString(),
           })
           .eq('id', existingProject.id);
@@ -85,12 +89,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
         const { error } = await supabase
           .from('projects')
           .insert({
-            title: values.title,
-            description: values.description,
-            image_url: values.image_url || null,
-            project_url: values.project_url || null,
-            github_url: values.github_url || null,
-            tags: processedTags,
+            title: processedValues.title,
+            description: processedValues.description,
+            image_url: processedValues.image_url,
+            project_url: processedValues.project_url,
+            github_url: processedValues.github_url,
+            tags: processedValues.tags, // This is now guaranteed to be string[] from zod transform
             user_id: user.id,
           });
           
