@@ -5,6 +5,47 @@
 
 @layer base {
   :root {
+    /* Light mode colors */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 142 76% 36%;  /* Updated to green */
+    --primary-foreground: 355 100% 100%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 142 76% 46%;  /* Updated to green */
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142 76% 36%;  /* Updated to green */
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 142 76% 36%;  /* Updated to green */
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 142 76% 36%;  /* Updated to green */
+  }
+
+  .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
 
@@ -14,7 +55,7 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 295 84% 60%;
+    --primary: 142 76% 36%;  /* Updated to green */
     --primary-foreground: 0 0% 98%;
 
     --secondary: 240 3.7% 15.9%;
@@ -23,7 +64,7 @@
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 295 84% 70%; 
+    --accent: 142 76% 46%;  /* Updated to green */ 
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -31,17 +72,16 @@
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --radius: 0.75rem;
+    --ring: 142 76% 36%;  /* Updated to green */
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary: 142 76% 36%;  /* Updated to green */
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 142 76% 36%;  /* Updated to green */
   }
 }
 
@@ -50,35 +90,43 @@
     @apply border-border;
   }
   body {
-    @apply bg-black text-white;
+    @apply bg-background text-foreground;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
   
   html {
     @apply scroll-smooth;
   }
+
+  .dark body {
+    @apply bg-black text-white;
+  }
+
+  .light body {
+    @apply bg-white text-gray-800;
+  }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-pink-light via-pink to-pink-dark bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent;
   }
   
   .border-glow {
-    @apply border border-pink rounded-md shadow-[0_0_10px_#D946EF];
+    @apply border border-green-500 rounded-md shadow-[0_0_10px_#22C55E];
   }
   
   .hover-scale {
     @apply transition-transform duration-300 hover:scale-105;
   }
   
-  /* Added new animation utilities */
+  /* Animation utilities */
   .float-animation {
     animation: floating 3s ease-in-out infinite;
   }
   
   .shimmer {
-    background: linear-gradient(90deg, rgba(217,70,239,0) 0%, rgba(217,70,239,0.5) 50%, rgba(217,70,239,0) 100%);
+    background: linear-gradient(90deg, rgba(34,197,94,0) 0%, rgba(34,197,94,0.5) 50%, rgba(34,197,94,0) 100%);
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }

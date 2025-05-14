@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,7 +61,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
     
     try {
       // Ensure tags is properly transformed from the zod schema to string[]
-      const processedTags: string[] = Array.isArray(values.tags) ? values.tags : [];
+      const processedTags = Array.isArray(values.tags) ? values.tags : [];
       
       if (existingProject) {
         // Update existing project
@@ -125,7 +126,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
               <FormControl>
                 <Input 
                   {...field} 
-                  className="bg-gray-900/60 border-gray-800 focus:border-pink text-white"
+                  className="bg-gray-900/60 border-gray-800 focus:border-green-500 text-white dark:bg-white/10 dark:border-gray-300 dark:focus:border-green-500"
                   placeholder="My Awesome Project"
                 />
               </FormControl>
@@ -143,7 +144,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
               <FormControl>
                 <Textarea 
                   {...field} 
-                  className="min-h-[120px] bg-gray-900/60 border-gray-800 focus:border-pink text-white"
+                  className="min-h-[120px] bg-gray-900/60 border-gray-800 focus:border-green-500 text-white dark:bg-white/10 dark:border-gray-300 dark:focus:border-green-500"
                   placeholder="A detailed description of your project"
                 />
               </FormControl>
@@ -162,7 +163,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
                 <FormControl>
                   <Input 
                     {...field} 
-                    className="bg-gray-900/60 border-gray-800 focus:border-pink text-white"
+                    className="bg-gray-900/60 border-gray-800 focus:border-green-500 text-white dark:bg-white/10 dark:border-gray-300 dark:focus:border-green-500"
                     placeholder="https://example.com/image.jpg"
                   />
                 </FormControl>
@@ -180,7 +181,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
                 <FormControl>
                   <Input 
                     {...field} 
-                    className="bg-gray-900/60 border-gray-800 focus:border-pink text-white"
+                    className="bg-gray-900/60 border-gray-800 focus:border-green-500 text-white dark:bg-white/10 dark:border-gray-300 dark:focus:border-green-500"
                     placeholder="https://my-project.com"
                   />
                 </FormControl>
@@ -200,7 +201,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
                 <FormControl>
                   <Input 
                     {...field} 
-                    className="bg-gray-900/60 border-gray-800 focus:border-pink text-white"
+                    className="bg-gray-900/60 border-gray-800 focus:border-green-500 text-white dark:bg-white/10 dark:border-gray-300 dark:focus:border-green-500"
                     placeholder="https://github.com/yourusername/project"
                   />
                 </FormControl>
@@ -218,7 +219,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
                 <FormControl>
                   <Input 
                     {...field} 
-                    className="bg-gray-900/60 border-gray-800 focus:border-pink text-white"
+                    className="bg-gray-900/60 border-gray-800 focus:border-green-500 text-white dark:bg-white/10 dark:border-gray-300 dark:focus:border-green-500"
                     placeholder="React, Node.js, MongoDB"
                   />
                 </FormControl>
@@ -235,6 +236,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
               variant="outline"
               onClick={onCancel}
               disabled={isSubmitting}
+              className="border-green-500 text-green-500 hover:bg-green-500/10"
             >
               Cancel
             </Button>
@@ -243,7 +245,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
           <Button 
             type="submit"
             disabled={isSubmitting}
-            className="bg-gradient-to-r from-pink-dark via-pink to-pink-light hover:opacity-90"
+            className="bg-gradient-to-r from-green-600 via-green-500 to-green-400 hover:opacity-90"
           >
             {isSubmitting ? 'Saving...' : existingProject ? 'Update Project' : 'Add Project'}
           </Button>
