@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,6 +59,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
     setIsSubmitting(true);
     
     try {
+      // Ensure tags is properly transformed from the zod schema to string[]
+      const processedTags: string[] = Array.isArray(values.tags) ? values.tags : [];
+      
       if (existingProject) {
         // Update existing project
         const { error } = await supabase
@@ -70,7 +72,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
             image_url: values.image_url || null,
             project_url: values.project_url || null,
             github_url: values.github_url || null,
-            tags: values.tags,  // The transform in the schema ensures this is already a string[]
+            tags: processedTags,
             updated_at: new Date().toISOString(),
           })
           .eq('id', existingProject.id);
@@ -87,7 +89,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ user, existingProject, onSave
             image_url: values.image_url || null,
             project_url: values.project_url || null,
             github_url: values.github_url || null,
-            tags: values.tags,  // The transform in the schema ensures this is already a string[]
+            tags: processedTags,
             user_id: user.id,
           });
           
